@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>BidGuard Analyzer</title>
+
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+
+  <main class="popup-shell">
+
+    <!-- Header -->
+    <header class="popup-header">
+
+      <div class="brand">
+
+        <span class="brand-icon">
+          B
+        </span>
+
+        <div>
+          <strong>BidGuard</strong>
+          <small>Auction Analyzer</small>
+        </div>
+
+      </div>
+
+      <span
+        id="siteBadge"
+        class="site-badge"
+      >
+        Ready
+      </span>
+
+    </header>
+
+
+    <!-- Intro -->
+    <section class="intro">
+
+      <h1>
+        Analyze this auction lot
+      </h1>
+
+      <p>
+        BidGuard will read the open auction page
+        and extract the important product and bidding details.
+      </p>
+
+    </section>
+
+
+    <!-- Main button -->
+    <button
+      id="analyzePageBtn"
+      class="primary-btn"
+      type="button"
+    >
+      Analyze this page
+    </button>
+
+
+    <!-- Status -->
+    <div
+      id="statusBox"
+      class="status-box"
+      aria-live="polite"
+    >
+      Open an auction lot and click Analyze this page.
+    </div>
+
+
+    <!-- Extracted information -->
+    <section
+      id="resultSection"
+      class="result-section hidden"
+    >
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-label">
+            Extracted details
+          </span>
+
+          <h2 id="productTitle">
+            Auction product
+          </h2>
+        </div>
+
+      </div>
+
+
+      <div class="detail-list">
+
+        <div class="detail-row">
+          <span>Model</span>
+          <strong id="modelNumber">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Condition</span>
+          <strong id="conditionValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Quantity</span>
+          <strong id="quantityValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Current bid</span>
+          <strong id="currentBidValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Buyer premium</span>
+          <strong id="buyerPremiumValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Auction retail estimate</span>
+          <strong id="auctionRetailValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Packaging</span>
+          <strong id="packagingValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Functional</span>
+          <strong id="functionalValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Missing parts</span>
+          <strong id="missingPartsValue">—</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Damaged</span>
+          <strong id="damagedValue">—</strong>
+        </div>
+
+      </div>
+
+
+      <div class="result-actions">
+
+        <button
+          id="sendToBidGuardBtn"
+          class="primary-btn"
+          type="button"
+        >
+          Calculate safe bid
+        </button>
+
+        <button
+          id="copyDetailsBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          Copy details
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+
+      <span>
+        Check extracted information before bidding.
+      </span>
+
+    </footer>
+
+  </main>
+
+
+  <script src="popup.js"></script>
+
+</body>
+</html>
