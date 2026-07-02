@@ -1,12 +1,7 @@
 "use strict";
 
 /* =========================================================
-   BIDGUARD — FRONT-END APPLICATION
-========================================================= */
-
-
-/* =========================================================
-   ELEMENTS
+   BIDGUARD — ELEMENTS
 ========================================================= */
 
 const screenshotInput =
@@ -24,13 +19,11 @@ const detectBtn =
 const aiStatus =
   document.getElementById("aiStatus");
 
-
 const auctionLink =
   document.getElementById("auctionLink");
 
 const analyzeLinkBtn =
   document.getElementById("analyzeLinkBtn");
-
 
 const productTitle =
   document.getElementById("productTitle");
@@ -65,10 +58,8 @@ const riskReserve =
 const desiredProfit =
   document.getElementById("desiredProfit");
 
-
 const calculateBtn =
   document.getElementById("calculateBtn");
-
 
 const decisionText =
   document.getElementById("decisionText");
@@ -78,7 +69,6 @@ const decisionBadge =
 
 const formulaNote =
   document.getElementById("formulaNote");
-
 
 const maxHammer =
   document.getElementById("maxHammer");
@@ -92,13 +82,11 @@ const currentAllIn =
 const expectedProfit =
   document.getElementById("expectedProfit");
 
-
 const copyBidBtn =
   document.getElementById("copyBidBtn");
 
 const saveBtn =
   document.getElementById("saveBtn");
-
 
 const historyBtn =
   document.getElementById("historyBtn");
@@ -125,11 +113,9 @@ function getNumber(element) {
   const value =
     Number.parseFloat(element.value);
 
-  if (Number.isFinite(value)) {
-    return value;
-  }
-
-  return 0;
+  return Number.isFinite(value)
+    ? value
+    : 0;
 }
 
 
@@ -170,16 +156,49 @@ function scrollToSection(sectionId) {
 
 function setButtonLoading(
   button,
-  loading,
+  isLoading,
   loadingText,
   normalText
 ) {
-  button.disabled = loading;
+  button.disabled = isLoading;
 
   button.textContent =
-    loading
+    isLoading
       ? loadingText
       : normalText;
+}
+
+
+/* =========================================================
+   RESET RESULT CARD
+========================================================= */
+
+function resetResults() {
+  latestResult = null;
+
+  decisionText.textContent =
+    "Ready to analyze";
+
+  decisionBadge.textContent =
+    "Waiting";
+
+  decisionBadge.className =
+    "decision-badge neutral";
+
+  maxHammer.textContent =
+    "$0.00";
+
+  maxAllIn.textContent =
+    "$0.00";
+
+  currentAllIn.textContent =
+    "$0.00";
+
+  expectedProfit.textContent =
+    "$0.00";
+
+  formulaNote.textContent =
+    "Enter the missing auction details to calculate your safe bid.";
 }
 
 
@@ -191,6 +210,12 @@ function detectAuctionSource(hostname) {
   const host =
     hostname.toLowerCase();
 
+  if (
+    host.includes("encoreauctions")
+  ) {
+    return "Encore Auctions";
+  }
+
   if (host.includes("hibid")) {
     return "HiBid";
   }
@@ -199,12 +224,10 @@ function detectAuctionSource(hostname) {
     return "MaxSold";
   }
 
-  if (host.includes("auctionnetwork")) {
+  if (
+    host.includes("auctionnetwork")
+  ) {
     return "Auction Network";
-  }
-
-  if (host.includes("encoreauctions")) {
-    return "Encore Auctions";
   }
 
   return "Auction website";
@@ -212,20 +235,17 @@ function detectAuctionSource(hostname) {
 
 
 function formatTitleWord(word) {
-  /*
-    Keep model numbers uppercase.
-
-    Examples:
-    pb040c → PB040C
-    cfp301 → CFP301
-    4k → 4K
-  */
-
   const containsLetter =
     /[a-zA-Z]/.test(word);
 
   const containsNumber =
     /\d/.test(word);
+
+  /*
+    Model numbers:
+    pb040c → PB040C
+    cfp301 → CFP301
+  */
 
   if (
     containsLetter &&
@@ -270,17 +290,13 @@ function createTitleFromLink(url) {
     return "";
   }
 
-  /*
-    Usually the final URL section contains
-    the auction product slug.
-  */
-
   let slug =
     pathParts[pathParts.length - 1];
 
   /*
-    If final section is only a lot number,
-    use the previous section.
+    HiBid URLs often contain:
+
+    /lot/309570451/product-name
   */
 
   if (
@@ -296,7 +312,7 @@ function createTitleFromLink(url) {
       decodeURIComponent(slug);
   } catch (error) {
     console.warn(
-      "Unable to decode URL title:",
+      "Unable to decode URL:",
       error
     );
   }
@@ -313,15 +329,10 @@ function createTitleFromLink(url) {
     return "";
   }
 
-  const formattedWords =
-    words.map(function (word, index) {
+  return words
+    .map(function (word, index) {
       const formatted =
         formatTitleWord(word);
-
-      /*
-        Capitalize first word even if it
-        is normally considered a small word.
-      */
 
       if (
         index === 0 &&
@@ -334,9 +345,8 @@ function createTitleFromLink(url) {
       }
 
       return formatted;
-    });
-
-  return formattedWords.join(" ");
+    })
+    .join(" ");
 }
 
 
@@ -387,7 +397,7 @@ analyzeLinkBtn.addEventListener(
     setButtonLoading(
       analyzeLinkBtn,
       true,
-      "Checking...",
+      "Reading...",
       "Analyze"
     );
 
@@ -406,12 +416,11 @@ analyzeLinkBtn.addEventListener(
           );
 
         /*
-          Only the product title is derived
-          from the URL.
+          Link analysis currently extracts
+          the product title from the URL only.
 
-          We do not pretend that condition,
-          bid, premium or resale price were
-          genuinely detected.
+          It does not fake condition,
+          bid or buyer premium.
         */
 
         productTitle.value =
@@ -425,16 +434,16 @@ analyzeLinkBtn.addEventListener(
         resalePrice.value = "";
         buyerPremium.value = "";
 
-        latestResult = null;
+        resetResults();
 
         showStatus(
-          source + " link added"
+          "Title extracted — screenshot needed for details"
         );
 
         setButtonLoading(
           analyzeLinkBtn,
           false,
-          "Checking...",
+          "Reading...",
           "Analyze"
         );
 
@@ -446,16 +455,12 @@ analyzeLinkBtn.addEventListener(
 );
 
 
-/*
-  Press Enter while auction-link
-  input is selected.
-*/
-
 auctionLink.addEventListener(
   "keydown",
   function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
+
       analyzeLinkBtn.click();
     }
   }
@@ -476,7 +481,9 @@ screenshotInput.addEventListener(
       return;
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (
+      !file.type.startsWith("image/")
+    ) {
       alert(
         "Please select a valid image."
       );
@@ -484,10 +491,6 @@ screenshotInput.addEventListener(
       screenshotInput.value = "";
       return;
     }
-
-    /*
-      Revoke previous temporary preview URL.
-    */
 
     if (currentPreviewUrl) {
       URL.revokeObjectURL(
@@ -506,13 +509,15 @@ screenshotInput.addEventListener(
 
     detectBtn.disabled = false;
 
+    resetResults();
+
     showStatus("Screenshot ready");
   }
 );
 
 
 /* =========================================================
-   CONVERT IMAGE TO BASE64
+   FILE TO BASE64
 ========================================================= */
 
 function fileToBase64(file) {
@@ -539,12 +544,11 @@ function fileToBase64(file) {
             return;
           }
 
-          const base64Data =
+          resolve(
             result.slice(
               commaPosition + 1
-            );
-
-          resolve(base64Data);
+            )
+          );
         };
 
       reader.onerror =
@@ -563,10 +567,12 @@ function fileToBase64(file) {
 
 
 /* =========================================================
-   SAFE RESPONSE READER
+   READ BACKEND RESPONSE
 ========================================================= */
 
-async function readApiResponse(response) {
+async function readApiResponse(
+  response
+) {
   const responseText =
     await response.text();
 
@@ -580,7 +586,7 @@ async function readApiResponse(response) {
     );
   } catch (error) {
     console.error(
-      "Non-JSON server response:",
+      "Server response:",
       responseText
     );
 
@@ -592,7 +598,7 @@ async function readApiResponse(response) {
 
 
 /* =========================================================
-   REAL AI SCREENSHOT ANALYSIS
+   SCREENSHOT AI ANALYSIS
 ========================================================= */
 
 detectBtn.addEventListener(
@@ -609,20 +615,15 @@ detectBtn.addEventListener(
       return;
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (
+      !file.type.startsWith("image/")
+    ) {
       alert(
         "Please upload a valid screenshot image."
       );
 
       return;
     }
-
-    /*
-      Netlify request bodies have limits,
-      and Base64 increases image size.
-
-      Keep raw screenshot below 4 MB.
-    */
 
     const maximumFileSize =
       4 * 1024 * 1024;
@@ -636,10 +637,11 @@ detectBtn.addEventListener(
     }
 
     if (
-      window.location.protocol === "file:"
+      window.location.protocol ===
+      "file:"
     ) {
       alert(
-        "AI analysis will work after the website is deployed on Netlify. It cannot call the Netlify function from a locally opened index.html file."
+        "AI analysis only works on the deployed Netlify website."
       );
 
       return;
@@ -690,13 +692,13 @@ detectBtn.addEventListener(
 
       productTitle.value =
         typeof result.productTitle ===
-        "string"
+          "string"
           ? result.productTitle
           : "";
 
       condition.value =
         typeof result.condition ===
-        "string"
+          "string"
           ? result.condition
           : "";
 
@@ -726,18 +728,47 @@ detectBtn.addEventListener(
           ? result.buyerPremium
           : "";
 
-      const confidence =
-        typeof result.confidence ===
-        "string"
-          ? result.confidence
-          : "unknown";
+      resetResults();
 
-      latestResult = null;
+      /*
+        Count genuinely detected fields.
+      */
+
+      const detectedFields = [
+        typeof result.productTitle ===
+          "string" &&
+          result.productTitle.trim() !== "",
+
+        typeof result.condition ===
+          "string" &&
+          result.condition !== "",
+
+        Number.isInteger(
+          result.quantity
+        ) &&
+          result.quantity > 0,
+
+        typeof result.currentBid ===
+          "number" &&
+          Number.isFinite(
+            result.currentBid
+          ),
+
+        typeof result.buyerPremium ===
+          "number" &&
+          Number.isFinite(
+            result.buyerPremium
+          )
+      ];
+
+      const detectedCount =
+        detectedFields.filter(
+          Boolean
+        ).length;
 
       showStatus(
-        "Detected — " +
-        confidence +
-        " confidence"
+        detectedCount +
+        "/5 fields detected"
       );
 
       scrollToSection("calculator");
@@ -748,9 +779,7 @@ detectBtn.addEventListener(
         error
       );
 
-      showStatus(
-        "Analysis failed"
-      );
+      showStatus("Analysis failed");
 
       alert(
         error.message ||
@@ -770,7 +799,7 @@ detectBtn.addEventListener(
 
 
 /* =========================================================
-   BID CALCULATION
+   BID CALCULATOR
 ========================================================= */
 
 function calculateBid() {
@@ -799,7 +828,7 @@ function calculateBid() {
     getNumber(desiredProfit);
 
 
-  if (resale <= 0) {
+  if (resalePrice.value.trim() === "") {
     alert(
       "Please enter the expected resale price."
     );
@@ -809,7 +838,19 @@ function calculateBid() {
   }
 
 
-  if (currentBid.value.trim() === "") {
+  if (resale <= 0) {
+    alert(
+      "Expected resale price must be greater than zero."
+    );
+
+    resalePrice.focus();
+    return null;
+  }
+
+
+  if (
+    currentBid.value.trim() === ""
+  ) {
     alert(
       "Please enter the current hammer bid."
     );
@@ -823,7 +864,7 @@ function calculateBid() {
     buyerPremium.value.trim() === ""
   ) {
     alert(
-      "Please enter the buyer premium. Enter 0 if there is no buyer premium."
+      "Please enter the buyer premium. Enter 0 if there is no premium."
     );
 
     buyerPremium.focus();
@@ -839,11 +880,7 @@ function calculateBid() {
 
 
   /*
-    Auction multiplier:
-
-    Hammer bid
-    + buyer premium
-    + tax on the auction subtotal
+    Hammer + premium + tax
   */
 
   const auctionMultiplier =
@@ -852,10 +889,7 @@ function calculateBid() {
 
 
   /*
-    Maximum total purchase cost:
-
-    This includes auction checkout
-    plus pickup cost.
+    Maximum complete purchase budget.
   */
 
   const maximumTotalPurchaseCost =
@@ -866,8 +900,7 @@ function calculateBid() {
 
 
   /*
-    Maximum amount available for the
-    auction invoice after removing pickup.
+    Pickup is outside the auction invoice.
   */
 
   const maximumAuctionCheckout =
@@ -897,29 +930,15 @@ function calculateBid() {
   }
 
 
-  /*
-    Current auction invoice:
-    hammer + premium + tax
-  */
-
   const currentAuctionCheckout =
     presentBid *
     auctionMultiplier;
 
 
-  /*
-    Current total purchase cost:
-    auction invoice + pickup
-  */
-
   const presentAllInCost =
     currentAuctionCheckout +
     pickupExpense;
 
-
-  /*
-    Expected profit after all entered costs.
-  */
 
   const estimatedProfit =
     resale -
@@ -1003,7 +1022,7 @@ function calculateBid() {
 
 
   formulaNote.textContent =
-    "Maximum bid includes buyer premium, tax, pickup cost, selling cost, condition risk and your desired profit.";
+    "Maximum bid includes buyer premium, tax, pickup cost, selling cost, condition risk and desired profit.";
 
 
   latestResult = {
@@ -1083,6 +1102,43 @@ calculateBtn.addEventListener(
 
 
 /* =========================================================
+   RESET STALE RESULT WHEN INPUT CHANGES
+========================================================= */
+
+const calculatorInputs = [
+  productTitle,
+  condition,
+  quantity,
+  currentBid,
+  resalePrice,
+  buyerPremium,
+  taxRate,
+  sellingCost,
+  pickupCost,
+  riskReserve,
+  desiredProfit
+];
+
+calculatorInputs.forEach(
+  function (input) {
+    input.addEventListener(
+      "input",
+      function () {
+        latestResult = null;
+      }
+    );
+
+    input.addEventListener(
+      "change",
+      function () {
+        latestResult = null;
+      }
+    );
+  }
+);
+
+
+/* =========================================================
    COPY MAXIMUM BID
 ========================================================= */
 
@@ -1127,7 +1183,7 @@ copyBidBtn.addEventListener(
 
 
 /* =========================================================
-   LOCAL SAVED HISTORY
+   HISTORY
 ========================================================= */
 
 function getHistory() {
@@ -1151,11 +1207,6 @@ function getHistory() {
       : [];
 
   } catch (error) {
-    console.error(
-      "Unable to read history:",
-      error
-    );
-
     return [];
   }
 }
@@ -1185,9 +1236,6 @@ function renderHistory() {
     emptyMessage.style.color =
       "#687086";
 
-    emptyMessage.style.fontSize =
-      "0.85rem";
-
     historyList.appendChild(
       emptyMessage
     );
@@ -1208,9 +1256,7 @@ function renderHistory() {
 
 
       const leftSide =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       const title =
         document.createElement(
@@ -1227,17 +1273,10 @@ function renderHistory() {
           "span"
         );
 
-      const savedDate =
-        new Date(item.savedAt);
-
       date.textContent =
-        Number.isNaN(
-          savedDate.getTime()
-        )
-          ? ""
-          : savedDate.toLocaleString(
-              "en-CA"
-            );
+        new Date(
+          item.savedAt
+        ).toLocaleString("en-CA");
 
 
       leftSide.appendChild(title);
@@ -1245,9 +1284,7 @@ function renderHistory() {
 
 
       const rightSide =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       rightSide.className =
         "history-price";
@@ -1293,7 +1330,7 @@ function renderHistory() {
 
 
 /* =========================================================
-   SAVE CURRENT ANALYSIS
+   SAVE ANALYSIS
 ========================================================= */
 
 saveBtn.addEventListener(
@@ -1311,10 +1348,6 @@ saveBtn.addEventListener(
       getHistory();
 
     history.unshift(result);
-
-    /*
-      Keep the latest 30 saved analyses.
-    */
 
     saveHistory(
       history.slice(0, 30)
@@ -1341,7 +1374,7 @@ saveBtn.addEventListener(
 
 
 /* =========================================================
-   SHOW / HIDE HISTORY
+   SHOW HISTORY
 ========================================================= */
 
 historyBtn.addEventListener(
@@ -1384,12 +1417,8 @@ clearHistoryBtn.addEventListener(
 
 
 /* =========================================================
-   INITIAL PAGE STATE
+   INITIAL STATE
 ========================================================= */
 
-/*
-  Do not automatically calculate when the
-  page opens because auction fields are blank.
-*/
-
+resetResults();
 showStatus("Ready");
