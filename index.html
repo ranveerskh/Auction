@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <meta name="theme-color" content="#070b17" />
+  <meta name="theme-color" content="#0b1020" />
 
   <title>BidGuard — Auction Profit Analyzer</title>
 
@@ -17,170 +17,346 @@
 
 <body>
 
-  <main class="page-shell">
+  <!-- Top Navigation -->
+  <header class="site-header">
 
-    <!-- Header -->
-    <header class="topbar">
+    <div class="nav-container">
 
-      <div>
-        <p class="eyebrow">
-          Auction Profit Analyzer
+      <a href="#" class="brand">
+
+        <span class="brand-icon">
+          B
+        </span>
+
+        <div>
+          <strong>BidGuard</strong>
+          <small>Auction Profit Analyzer</small>
+        </div>
+
+      </a>
+
+      <nav class="desktop-nav">
+
+        <a href="#analyze">
+          Analyze
+        </a>
+
+        <a href="#calculator">
+          Calculator
+        </a>
+
+        <button
+          id="historyBtn"
+          class="nav-button"
+          type="button"
+        >
+          Saved
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main class="main-container">
+
+    <!-- Compact Intro -->
+    <section class="intro-section">
+
+      <div class="intro-content">
+
+        <span class="intro-badge">
+          Built for auction resellers
+        </span>
+
+        <h1>
+          Know the real cost before you bid.
+        </h1>
+
+        <p>
+          Analyze an auction lot, include all fees and calculate
+          the maximum hammer price you should pay.
         </p>
 
-        <h1>BidGuard</h1>
       </div>
 
-      <button
-        id="historyBtn"
-        class="ghost-btn"
-        type="button"
-      >
-        History
-      </button>
+      <div class="intro-stats">
 
-    </header>
+        <div class="intro-stat">
+          <span>Includes</span>
+          <strong>Premium + Tax</strong>
+        </div>
 
+        <div class="intro-stat">
+          <span>Calculates</span>
+          <strong>Maximum Bid</strong>
+        </div>
 
-    <!-- Hero -->
-    <section class="hero">
+        <div class="intro-stat">
+          <span>Shows</span>
+          <strong>Expected Profit</strong>
+        </div>
 
-      <p class="hero-kicker">
-        Know your maximum safe bid before you buy.
-      </p>
-
-      <h2>
-        Stop guessing. Bid with confidence.
-      </h2>
-
-      <p class="hero-copy">
-        Paste an auction link or upload a screenshot.
-        BidGuard calculates buyer premium, tax, pickup cost,
-        condition risk, expected profit and your maximum safe bid.
-      </p>
+      </div>
 
     </section>
 
 
-    <!-- Step 1 -->
-    <section class="card">
+    <!-- Main Analyzer Area -->
+    <section
+      class="analyzer-grid"
+      id="analyze"
+    >
 
-      <div class="section-heading">
+      <!-- Add Lot Card -->
+      <article class="dashboard-card main-action-card">
 
-        <div>
-          <span class="step-badge">1</span>
+        <div class="card-header">
 
-          <h3>
-            Add auction lot
-          </h3>
-        </div>
+          <div>
 
-        <span
-          class="status-pill"
-          id="aiStatus"
-        >
-          Ready
-        </span>
+            <span class="section-label">
+              Step 1
+            </span>
 
-      </div>
+            <h2>
+              Add auction lot
+            </h2>
 
+            <p>
+              Paste a lot link or upload a screenshot.
+            </p>
 
-      <!-- Auction link -->
-      <div class="link-upload-box">
+          </div>
 
-        <label for="auctionLink">
-          Paste auction link
-        </label>
-
-        <div class="link-input-row">
-
-          <input
-            id="auctionLink"
-            type="url"
-            placeholder="https://canada.hibid.com/lot/..."
-            autocomplete="off"
-          />
-
-          <button
-            id="analyzeLinkBtn"
-            class="primary-btn"
-            type="button"
+          <span
+            class="status-pill"
+            id="aiStatus"
           >
-            Analyze link
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="upload-divider">
-        <span>OR UPLOAD SCREENSHOT</span>
-      </div>
-
-
-      <!-- Screenshot upload -->
-      <label
-        class="upload-zone"
-        id="uploadZone"
-        for="screenshotInput"
-      >
-
-        <input
-          id="screenshotInput"
-          type="file"
-          accept="image/png, image/jpeg, image/webp"
-          hidden
-        />
-
-        <div id="uploadPrompt">
-
-          <strong>
-            Choose auction screenshot
-          </strong>
-
-          <span>
-            PNG, JPG or WEBP
+            Ready
           </span>
 
         </div>
 
-        <img
-          id="previewImage"
-          alt="Auction screenshot preview"
-          hidden
-        />
 
-      </label>
+        <!-- Link Input -->
+        <div class="input-section">
+
+          <label for="auctionLink">
+            Auction link
+          </label>
+
+          <div class="link-input-row">
+
+            <input
+              id="auctionLink"
+              type="url"
+              placeholder="Paste HiBid, MaxSold or auction link"
+              autocomplete="off"
+            />
+
+            <button
+              id="analyzeLinkBtn"
+              class="primary-btn"
+              type="button"
+            >
+              Analyze
+            </button>
+
+          </div>
+
+        </div>
 
 
-      <button
-        id="detectBtn"
-        class="primary-btn full-width"
-        type="button"
-        disabled
-      >
-        Detect product details
-      </button>
+        <div class="or-divider">
+          <span>or</span>
+        </div>
 
-      <p class="helper-text">
-        Review and edit the detected information before calculating.
-        Never rely blindly on automated product detection.
-      </p>
+
+        <!-- Screenshot Upload -->
+        <label
+          class="upload-box"
+          id="uploadZone"
+          for="screenshotInput"
+        >
+
+          <input
+            id="screenshotInput"
+            type="file"
+            accept="image/png, image/jpeg, image/webp"
+            hidden
+          />
+
+          <div id="uploadPrompt">
+
+            <span class="upload-icon">
+              ↑
+            </span>
+
+            <div>
+              <strong>
+                Upload auction screenshot
+              </strong>
+
+              <small>
+                PNG, JPG or WEBP
+              </small>
+            </div>
+
+          </div>
+
+          <img
+            id="previewImage"
+            alt="Auction screenshot preview"
+            hidden
+          />
+
+        </label>
+
+
+        <button
+          id="detectBtn"
+          class="secondary-btn full-width"
+          type="button"
+          disabled
+        >
+          Detect product details
+        </button>
+
+      </article>
+
+
+      <!-- How It Works -->
+      <aside class="dashboard-card info-card">
+
+        <div class="card-header">
+
+          <div>
+            <span class="section-label">
+              Quick guide
+            </span>
+
+            <h2>
+              How BidGuard works
+            </h2>
+          </div>
+
+        </div>
+
+
+        <div class="guide-list">
+
+          <div class="guide-item">
+
+            <span>1</span>
+
+            <div>
+              <strong>
+                Add the auction lot
+              </strong>
+
+              <p>
+                Paste the link or upload its screenshot.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="guide-item">
+
+            <span>2</span>
+
+            <div>
+              <strong>
+                Confirm product details
+              </strong>
+
+              <p>
+                Review condition, quantity and current bid.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="guide-item">
+
+            <span>3</span>
+
+            <div>
+              <strong>
+                Enter your costs
+              </strong>
+
+              <p>
+                Add premium, tax, pickup and desired profit.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="guide-item">
+
+            <span>4</span>
+
+            <div>
+              <strong>
+                Get your safe bid
+              </strong>
+
+              <p>
+                See Buy, Caution or Pass instantly.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="info-note">
+
+          <strong>
+            Important
+          </strong>
+
+          <p>
+            Always confirm AI-detected product information before bidding.
+          </p>
+
+        </div>
+
+      </aside>
 
     </section>
 
 
-    <!-- Step 2 -->
-    <section class="card">
+    <!-- Product and Cost Details -->
+    <section
+      class="dashboard-card calculator-card"
+      id="calculator"
+    >
 
-      <div class="section-heading">
+      <div class="card-header">
 
         <div>
-          <span class="step-badge">2</span>
 
-          <h3>
-            Confirm product details
-          </h3>
+          <span class="section-label">
+            Step 2
+          </span>
+
+          <h2>
+            Product and cost details
+          </h2>
+
+          <p>
+            Adjust the detected values before calculating.
+          </p>
+
         </div>
 
       </div>
@@ -188,10 +364,12 @@
 
       <div class="form-grid">
 
-        <!-- Product title -->
-        <label class="field field-span-2">
+        <!-- Product Title -->
+        <label class="form-field field-wide">
 
-          <span>Product title</span>
+          <span>
+            Product title
+          </span>
 
           <input
             id="productTitle"
@@ -204,9 +382,11 @@
 
 
         <!-- Condition -->
-        <label class="field">
+        <label class="form-field">
 
-          <span>Condition</span>
+          <span>
+            Condition
+          </span>
 
           <select id="condition">
 
@@ -259,9 +439,11 @@
 
 
         <!-- Quantity -->
-        <label class="field">
+        <label class="form-field">
 
-          <span>Quantity</span>
+          <span>
+            Quantity
+          </span>
 
           <input
             id="quantity"
@@ -274,165 +456,241 @@
         </label>
 
 
-        <!-- Expected resale -->
-        <label class="field">
+        <!-- Current Bid -->
+        <label class="form-field">
 
-          <span>Expected resale total (CAD)</span>
+          <span>
+            Current hammer bid
+          </span>
 
-          <input
-            id="resalePrice"
-            type="number"
-            min="0"
-            step="0.01"
-            value="180"
-          />
+          <div class="money-input">
 
-        </label>
+            <span>$</span>
 
+            <input
+              id="currentBid"
+              type="number"
+              min="0"
+              step="0.01"
+              value="65"
+            />
 
-        <!-- Current bid -->
-        <label class="field">
-
-          <span>Current hammer bid (CAD)</span>
-
-          <input
-            id="currentBid"
-            type="number"
-            min="0"
-            step="0.01"
-            value="65"
-          />
+          </div>
 
         </label>
 
 
-        <!-- Buyer premium -->
-        <label class="field">
+        <!-- Resale Price -->
+        <label class="form-field">
 
-          <span>Buyer premium (%)</span>
+          <span>
+            Expected resale total
+          </span>
 
-          <input
-            id="buyerPremium"
-            type="number"
-            min="0"
-            step="0.01"
-            value="15"
-          />
+          <div class="money-input">
+
+            <span>$</span>
+
+            <input
+              id="resalePrice"
+              type="number"
+              min="0"
+              step="0.01"
+              value="180"
+            />
+
+          </div>
+
+        </label>
+
+
+        <!-- Buyer Premium -->
+        <label class="form-field">
+
+          <span>
+            Buyer premium
+          </span>
+
+          <div class="suffix-input">
+
+            <input
+              id="buyerPremium"
+              type="number"
+              min="0"
+              step="0.01"
+              value="15"
+            />
+
+            <span>%</span>
+
+          </div>
 
         </label>
 
 
         <!-- Tax -->
-        <label class="field">
+        <label class="form-field">
 
-          <span>Tax (%)</span>
+          <span>
+            Tax
+          </span>
 
-          <input
-            id="taxRate"
-            type="number"
-            min="0"
-            step="0.01"
-            value="13"
-          />
+          <div class="suffix-input">
 
-        </label>
+            <input
+              id="taxRate"
+              type="number"
+              min="0"
+              step="0.01"
+              value="13"
+            />
 
+            <span>%</span>
 
-        <!-- Selling cost -->
-        <label class="field">
-
-          <span>Selling or negotiation cost (CAD)</span>
-
-          <input
-            id="sellingCost"
-            type="number"
-            min="0"
-            step="0.01"
-            value="18"
-          />
+          </div>
 
         </label>
 
 
-        <!-- Pickup -->
-        <label class="field">
+        <!-- Selling Cost -->
+        <label class="form-field">
 
-          <span>Pickup or fuel cost (CAD)</span>
+          <span>
+            Selling or negotiation cost
+          </span>
 
-          <input
-            id="pickupCost"
-            type="number"
-            min="0"
-            step="0.01"
-            value="7"
-          />
+          <div class="money-input">
 
-        </label>
+            <span>$</span>
 
+            <input
+              id="sellingCost"
+              type="number"
+              min="0"
+              step="0.01"
+              value="18"
+            />
 
-        <!-- Risk -->
-        <label class="field">
-
-          <span>Condition risk reserve (CAD)</span>
-
-          <input
-            id="riskReserve"
-            type="number"
-            min="0"
-            step="0.01"
-            value="15"
-          />
+          </div>
 
         </label>
 
 
-        <!-- Desired profit -->
-        <label class="field">
+        <!-- Pickup Cost -->
+        <label class="form-field">
 
-          <span>Desired profit (CAD)</span>
+          <span>
+            Pickup or fuel cost
+          </span>
 
-          <input
-            id="desiredProfit"
-            type="number"
-            min="0"
-            step="0.01"
-            value="50"
-          />
+          <div class="money-input">
+
+            <span>$</span>
+
+            <input
+              id="pickupCost"
+              type="number"
+              min="0"
+              step="0.01"
+              value="7"
+            />
+
+          </div>
+
+        </label>
+
+
+        <!-- Risk Reserve -->
+        <label class="form-field">
+
+          <span>
+            Condition risk reserve
+          </span>
+
+          <div class="money-input">
+
+            <span>$</span>
+
+            <input
+              id="riskReserve"
+              type="number"
+              min="0"
+              step="0.01"
+              value="15"
+            />
+
+          </div>
+
+        </label>
+
+
+        <!-- Desired Profit -->
+        <label class="form-field">
+
+          <span>
+            Desired profit
+          </span>
+
+          <div class="money-input">
+
+            <span>$</span>
+
+            <input
+              id="desiredProfit"
+              type="number"
+              min="0"
+              step="0.01"
+              value="50"
+            />
+
+          </div>
 
         </label>
 
       </div>
 
 
-      <button
-        id="calculateBtn"
-        class="primary-btn full-width"
-        type="button"
-      >
-        Calculate maximum safe bid
-      </button>
+      <div class="calculator-footer">
+
+        <p>
+          Currency: CAD
+        </p>
+
+        <button
+          id="calculateBtn"
+          class="primary-btn calculate-btn"
+          type="button"
+        >
+          Calculate maximum safe bid
+        </button>
+
+      </div>
 
     </section>
 
 
-    <!-- Results -->
+    <!-- Result Dashboard -->
     <section
-      class="result-card"
+      class="result-dashboard"
       id="resultCard"
       aria-live="polite"
     >
 
-      <div class="result-top">
+      <div class="result-summary">
 
         <div>
 
-          <p class="eyebrow">
+          <span class="section-label">
             Bid recommendation
-          </p>
+          </span>
 
-          <h3 id="decisionText">
-            READY TO ANALYZE
-          </h3>
+          <h2 id="decisionText">
+            Ready to analyze
+          </h2>
+
+          <p id="formulaNote">
+            Confirm the product details to calculate your safe bid.
+          </p>
 
         </div>
 
@@ -440,15 +698,15 @@
           class="decision-badge neutral"
           id="decisionBadge"
         >
-          —
+          Waiting
         </span>
 
       </div>
 
 
-      <div class="metric-grid">
+      <div class="result-metrics">
 
-        <article class="metric">
+        <article class="result-metric featured">
 
           <span>
             Maximum hammer bid
@@ -458,10 +716,14 @@
             $0.00
           </strong>
 
+          <small>
+            Do not bid above this amount
+          </small>
+
         </article>
 
 
-        <article class="metric">
+        <article class="result-metric">
 
           <span>
             Maximum all-in cost
@@ -471,10 +733,14 @@
             $0.00
           </strong>
 
+          <small>
+            Including auction fees
+          </small>
+
         </article>
 
 
-        <article class="metric">
+        <article class="result-metric">
 
           <span>
             Current all-in cost
@@ -484,10 +750,14 @@
             $0.00
           </strong>
 
+          <small>
+            Based on current bid
+          </small>
+
         </article>
 
 
-        <article class="metric">
+        <article class="result-metric">
 
           <span>
             Expected profit now
@@ -496,6 +766,10 @@
           <strong id="expectedProfit">
             $0.00
           </strong>
+
+          <small>
+            After entered expenses
+          </small>
 
         </article>
 
@@ -506,7 +780,7 @@
 
         <button
           id="copyBidBtn"
-          class="secondary-btn"
+          class="primary-btn"
           type="button"
         >
           Copy maximum bid
@@ -514,7 +788,7 @@
 
         <button
           id="saveBtn"
-          class="ghost-btn"
+          class="secondary-btn"
           type="button"
         >
           Save analysis
@@ -522,47 +796,38 @@
 
       </div>
 
-
-      <p
-        class="formula-note"
-        id="formulaNote"
-      >
-        Enter or confirm the auction details to calculate your safe bid.
-      </p>
-
     </section>
 
 
-    <!-- History -->
+    <!-- Saved Analyses -->
     <section
-      class="card hidden"
+      class="dashboard-card history-panel hidden"
       id="historyPanel"
     >
 
-      <div class="section-heading">
+      <div class="card-header">
 
         <div>
 
-          <span class="step-badge">
-            ✓
+          <span class="section-label">
+            Saved
           </span>
 
-          <h3>
-            Saved analyses
-          </h3>
+          <h2>
+            Analysis history
+          </h2>
 
         </div>
 
         <button
           id="clearHistoryBtn"
-          class="text-btn"
+          class="danger-text-button"
           type="button"
         >
           Clear history
         </button>
 
       </div>
-
 
       <div
         id="historyList"
