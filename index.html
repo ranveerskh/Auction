@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta name="theme-color" content="#111827" />
+
+  <title>BidGuard — Auction Profit Analyzer</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="page-shell">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Auction Profit Analyzer</p>
+        <h1>BidGuard</h1>
+      </div>
+
+      <button
+        id="historyBtn"
+        class="ghost-btn"
+        type="button"
+      >
+        History
+      </button>
+    </header>
+
+    <!-- Intro -->
+    <section class="hero">
+      <p class="hero-kicker">
+        Know your maximum safe bid before you buy.
+      </p>
+
+      <h2>
+        Upload a lot screenshot and calculate the real profit.
+      </h2>
+
+      <p class="hero-copy">
+        Add buyer premium, tax, pickup cost, risk reserve and desired profit.
+        BidGuard calculates the highest hammer price you should pay.
+      </p>
+    </section>
+
+    <!-- Screenshot upload -->
+    <section class="card">
+
+      <div class="section-heading">
+        <div>
+          <span class="step-badge">1</span>
+          <h3>Upload auction screenshot</h3>
+        </div>
+
+        <span
+          class="status-pill"
+          id="aiStatus"
+        >
+          Ready
+        </span>
+      </div>
+
+      <label
+        class="upload-zone"
+        id="uploadZone"
+      >
+        <input
+          id="screenshotInput"
+          type="file"
+          accept="image/*"
+          hidden
+        />
+
+        <div id="uploadPrompt">
+          <strong>Tap to choose screenshot</strong>
+          <span>PNG, JPG or WEBP</span>
+        </div>
+
+        <img
+          id="previewImage"
+          alt="Auction screenshot preview"
+          hidden
+        />
+      </label>
+
+      <button
+        id="detectBtn"
+        class="primary-btn full-width"
+        type="button"
+        disabled
+      >
+        Detect product details
+      </button>
+
+      <p class="helper-text">
+        Upload an auction screenshot. You will be able to confirm or edit
+        all detected information before calculating the maximum bid.
+      </p>
+
+    </section>
+
+    <!-- Auction details -->
+    <section class="card">
+
+      <div class="section-heading">
+        <div>
+          <span class="step-badge">2</span>
+          <h3>Confirm auction details</h3>
+        </div>
+      </div>
+
+      <div class="form-grid">
+
+        <label class="field field-span-2">
+          <span>Product title</span>
+
+          <input
+            id="productTitle"
+            type="text"
+            placeholder="Example: Ninja CFP301 Coffee Maker"
+          />
+        </label>
+
+        <label class="field">
+          <span>Condition</span>
+
+          <select id="condition">
+            <option value="new">
+              New / Sealed
+            </option>
+
+            <option value="open_box" selected>
+              Open box
+            </option>
+
+            <option value="used">
+              Used
+            </option>
+
+            <option value="unknown">
+              Unknown
+            </option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Quantity</span>
+
+          <input
+            id="quantity"
+            type="number"
+            min="1"
+            step="1"
+            value="1"
+          />
+        </label>
+
+        <label class="field">
+          <span>Expected resale total (CAD)</span>
+
+          <input
+            id="resalePrice"
+            type="number"
+            min="0"
+            step="0.01"
+            value="180"
+          />
+        </label>
+
+        <label class="field">
+          <span>Buyer premium (%)</span>
+
+          <input
+            id="buyerPremium"
+            type="number"
+            min="0"
+            step="0.01"
+            value="15"
+          />
+        </label>
+
+        <label class="field">
+          <span>Tax (%)</span>
+
+          <input
+            id="taxRate"
+            type="number"
+            min="0"
+            step="0.01"
+            value="13"
+          />
+        </label>
+
+        <label class="field">
+          <span>Selling or negotiation cost (CAD)</span>
+
+          <input
+            id="sellingCost"
+            type="number"
+            min="0"
+            step="0.01"
+            value="18"
+          />
+        </label>
+
+        <label class="field">
+          <span>Pickup or fuel cost (CAD)</span>
+
+          <input
+            id="pickupCost"
+            type="number"
+            min="0"
+            step="0.01"
+            value="7"
+          />
+        </label>
+
+        <label class="field">
+          <span>Condition risk reserve (CAD)</span>
+
+          <input
+            id="riskReserve"
+            type="number"
+            min="0"
+            step="0.01"
+            value="15"
+          />
+        </label>
+
+        <label class="field">
+          <span>Desired profit (CAD)</span>
+
+          <input
+            id="desiredProfit"
+            type="number"
+            min="0"
+            step="0.01"
+            value="50"
+          />
+        </label>
+
+        <label class="field">
+          <span>Current hammer bid (CAD)</span>
+
+          <input
+            id="currentBid"
+            type="number"
+            min="0"
+            step="0.01"
+            value="65"
+          />
+        </label>
+
+      </div>
+
+      <button
+        id="calculateBtn"
+        class="primary-btn full-width"
+        type="button"
+      >
+        Calculate maximum safe bid
+      </button>
+
+    </section>
+
+    <!-- Result -->
+    <section
+      class="result-card"
+      id="resultCard"
+      aria-live="polite"
+    >
+
+      <div class="result-top">
+        <div>
+          <p class="eyebrow">Recommendation</p>
+
+          <h3 id="decisionText">
+            READY TO ANALYZE
+          </h3>
+        </div>
+
+        <span
+          class="decision-badge neutral"
+          id="decisionBadge"
+        >
+          —
+        </span>
+      </div>
+
+      <div class="metric-grid">
+
+        <article class="metric">
+          <span>Maximum hammer bid</span>
+
+          <strong id="maxHammer">
+            $0.00
+          </strong>
+        </article>
+
+        <article class="metric">
+          <span>Maximum all-in cost</span>
+
+          <strong id="maxAllIn">
+            $0.00
+          </strong>
+        </article>
+
+        <article class="metric">
+          <span>Current all-in cost</span>
+
+          <strong id="currentAllIn">
+            $0.00
+          </strong>
+        </article>
+
+        <article class="metric">
+          <span>Expected profit now</span>
+
+          <strong id="expectedProfit">
+            $0.00
+          </strong>
+        </article>
+
+      </div>
+
+      <div class="result-actions">
+
+        <button
+          id="copyBidBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          Copy max bid
+        </button>
+
+        <button
+          id="saveBtn"
+          class="ghost-btn"
+          type="button"
+        >
+          Save analysis
+        </button>
+
+      </div>
+
+      <p
+        class="formula-note"
+        id="formulaNote"
+      >
+        Enter details above to calculate your safe bid.
+      </p>
+
+    </section>
+
+    <!-- Saved history -->
+    <section
+      class="card hidden"
+      id="historyPanel"
+    >
+
+      <div class="section-heading">
+        <div>
+          <span class="step-badge">✓</span>
+          <h3>Saved analyses</h3>
+        </div>
+
+        <button
+          id="clearHistoryBtn"
+          class="text-btn"
+          type="button"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div
+        id="historyList"
+        class="history-list"
+      ></div>
+
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
