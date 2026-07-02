@@ -538,7 +538,3 @@ clearHistoryBtn.addEventListener("click", function () {
   localStorage.removeItem("bidguard-history");
   renderHistory();
 });
-
-/* Initial result */
-
-calculateBid();
