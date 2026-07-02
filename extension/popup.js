@@ -7,7 +7,7 @@
 */
 
 const BIDGUARD_WEB_URL =
-  "https://YOUR-SITE.netlify.app/";
+  "https://auctionprofit.netlify.app/";
 
 
 const analyzePageBtn =
