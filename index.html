@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <meta name="theme-color" content="#0b1020" />
+  <meta name="theme-color" content="#ffffff" />
 
   <title>BidGuard — Auction Profit Analyzer</title>
 
@@ -62,7 +62,7 @@
 
   <main class="main-container">
 
-    <!-- Compact Intro -->
+    <!-- Intro -->
     <section class="intro-section">
 
       <div class="intro-content">
@@ -76,11 +76,12 @@
         </h1>
 
         <p>
-          Analyze an auction lot, include all fees and calculate
-          the maximum hammer price you should pay.
+          Add an auction lot, include all fees and calculate the
+          maximum hammer price you should pay.
         </p>
 
       </div>
+
 
       <div class="intro-stats">
 
@@ -104,13 +105,13 @@
     </section>
 
 
-    <!-- Main Analyzer Area -->
+    <!-- Main Analyzer -->
     <section
       class="analyzer-grid"
       id="analyze"
     >
 
-      <!-- Add Lot Card -->
+      <!-- Add Auction Lot -->
       <article class="dashboard-card main-action-card">
 
         <div class="card-header">
@@ -126,7 +127,7 @@
             </h2>
 
             <p>
-              Paste a lot link or upload a screenshot.
+              Paste the lot link or upload a screenshot.
             </p>
 
           </div>
@@ -141,7 +142,7 @@
         </div>
 
 
-        <!-- Link Input -->
+        <!-- Auction Link -->
         <div class="input-section">
 
           <label for="auctionLink">
@@ -153,7 +154,7 @@
             <input
               id="auctionLink"
               type="url"
-              placeholder="Paste HiBid, MaxSold or auction link"
+              placeholder="Paste HiBid, MaxSold or another auction link"
               autocomplete="off"
             />
 
@@ -196,6 +197,7 @@
             </span>
 
             <div>
+
               <strong>
                 Upload auction screenshot
               </strong>
@@ -203,6 +205,7 @@
               <small>
                 PNG, JPG or WEBP
               </small>
+
             </div>
 
           </div>
@@ -234,6 +237,7 @@
         <div class="card-header">
 
           <div>
+
             <span class="section-label">
               Quick guide
             </span>
@@ -241,6 +245,7 @@
             <h2>
               How BidGuard works
             </h2>
+
           </div>
 
         </div>
@@ -253,9 +258,7 @@
             <span>1</span>
 
             <div>
-              <strong>
-                Add the auction lot
-              </strong>
+              <strong>Add the auction lot</strong>
 
               <p>
                 Paste the link or upload its screenshot.
@@ -270,12 +273,10 @@
             <span>2</span>
 
             <div>
-              <strong>
-                Confirm product details
-              </strong>
+              <strong>Confirm product details</strong>
 
               <p>
-                Review condition, quantity and current bid.
+                Review title, condition and quantity.
               </p>
             </div>
 
@@ -287,12 +288,10 @@
             <span>3</span>
 
             <div>
-              <strong>
-                Enter your costs
-              </strong>
+              <strong>Enter auction costs</strong>
 
               <p>
-                Add premium, tax, pickup and desired profit.
+                Add current bid, premium, tax and pickup cost.
               </p>
             </div>
 
@@ -304,9 +303,7 @@
             <span>4</span>
 
             <div>
-              <strong>
-                Get your safe bid
-              </strong>
+              <strong>Get your safe bid</strong>
 
               <p>
                 See Buy, Caution or Pass instantly.
@@ -325,7 +322,7 @@
           </strong>
 
           <p>
-            Always confirm AI-detected product information before bidding.
+            Always confirm automatically detected information before bidding.
           </p>
 
         </div>
@@ -354,7 +351,7 @@
           </h2>
 
           <p>
-            Adjust the detected values before calculating.
+            Confirm the product and enter missing auction information.
           </p>
 
         </div>
@@ -374,7 +371,7 @@
           <input
             id="productTitle"
             type="text"
-            placeholder="Example: Ninja CFP301 Coffee Maker"
+            placeholder="Example: Ninja PB040C Pods and Grounds Coffee Maker"
             autocomplete="off"
           />
 
@@ -390,14 +387,18 @@
 
           <select id="condition">
 
+            <option
+              value=""
+              selected
+            >
+              Select condition
+            </option>
+
             <option value="brand_new_sealed">
               Brand New - Sealed
             </option>
 
-            <option
-              value="brand_new_open_box"
-              selected
-            >
+            <option value="brand_new_open_box">
               Brand New - Open Box
             </option>
 
@@ -472,7 +473,7 @@
               type="number"
               min="0"
               step="0.01"
-              value="65"
+              placeholder="0.00"
             />
 
           </div>
@@ -480,7 +481,7 @@
         </label>
 
 
-        <!-- Resale Price -->
+        <!-- Expected Resale -->
         <label class="form-field">
 
           <span>
@@ -496,7 +497,7 @@
               type="number"
               min="0"
               step="0.01"
-              value="180"
+              placeholder="0.00"
             />
 
           </div>
@@ -518,7 +519,7 @@
               type="number"
               min="0"
               step="0.01"
-              value="15"
+              placeholder="Example: 15"
             />
 
             <span>%</span>
@@ -568,7 +569,7 @@
               type="number"
               min="0"
               step="0.01"
-              value="18"
+              value="0"
             />
 
           </div>
@@ -592,7 +593,7 @@
               type="number"
               min="0"
               step="0.01"
-              value="7"
+              value="0"
             />
 
           </div>
@@ -616,7 +617,7 @@
               type="number"
               min="0"
               step="0.01"
-              value="15"
+              value="0"
             />
 
           </div>
@@ -669,7 +670,7 @@
     </section>
 
 
-    <!-- Result Dashboard -->
+    <!-- Results -->
     <section
       class="result-dashboard"
       id="resultCard"
@@ -689,7 +690,7 @@
           </h2>
 
           <p id="formulaNote">
-            Confirm the product details to calculate your safe bid.
+            Enter the missing auction details to calculate your safe bid.
           </p>
 
         </div>
@@ -734,7 +735,7 @@
           </strong>
 
           <small>
-            Including auction fees
+            Maximum total purchase budget
           </small>
 
         </article>
@@ -751,7 +752,7 @@
           </strong>
 
           <small>
-            Based on current bid
+            Based on the current bid
           </small>
 
         </article>
@@ -799,7 +800,7 @@
     </section>
 
 
-    <!-- Saved Analyses -->
+    <!-- Saved Analysis History -->
     <section
       class="dashboard-card history-panel hidden"
       id="historyPanel"
@@ -828,6 +829,7 @@
         </button>
 
       </div>
+
 
       <div
         id="historyList"
